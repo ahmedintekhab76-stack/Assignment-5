@@ -1,56 +1,53 @@
-# 🚀 Dev Stack
+# Dev Stack
 
-**Dev Stack** is a React web app that helps developers explore frontend, backend,
-database, and tooling technologies — then build a personal "stack" by picking
-the tools they'd actually use on their next project.
+Dev Stack is a React web application that helps developers explore frontend,
+backend, database, and tooling technologies, and build a personal technology
+stack by selecting the tools they would use on their next project.
 
-Compare technologies side by side, save your favorites to **Your Stack**, and
-build a shortlist you can revisit anytime.
+## Description
 
----
+The application opens with a hero section introducing the concept, followed
+by a grid of technology cards covering options such as React, Node.js,
+PostgreSQL, and Docker. Each card displays the technology's category,
+difficulty level, and rating. Selecting **Add to Stack** saves the
+technology to a live "Your Stack" panel, where individual items can be
+removed or the entire stack can be cleared at once. The interface is built
+around a single shared gradient theme and is fully responsive across mobile,
+tablet, and desktop screens.
 
-## ✨ Overview
-
-The app opens with a hero section that introduces the idea, then scrolls into
-a grid of technology cards — React, Node.js, PostgreSQL, Docker, and more.
-Each card shows its category, difficulty level, and rating. Clicking
-**Add to Stack** saves it to a live **Your Stack** panel, where it can be
-removed one at a time or all at once. The whole interface is built around a
-single shared orange → pink → violet gradient, and it's fully responsive
-from mobile to desktop.
-
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Technology | Purpose |
 |---|---|
-| **React.js** | Component-based UI |
-| **Tailwind CSS** | Utility-first styling |
-| **JavaScript (ES6+)** | App logic |
-| **React-Toastify** | Alert notifications |
-| **JSON** | Local technology data source |
-| **Vite** | Dev server & build tool |
+| React.js | Component-based user interface |
+| Tailwind CSS | Utility-first styling |
+| JavaScript (ES6+) | Application logic |
+| React-Toastify | Alert notifications |
+| JSON | Local technology data source |
+| Vite | Development server and build tool |
 
-## 🌟 Features
+## Features
 
-### 1. Add / Remove Your Stack
-Pick any number of technologies into a personal **Your Stack** list, remove
-one at a time with the `✕` button, or clear everything at once with
-**Remove All**. Every action — including trying to add the same technology
-twice — triggers a toast notification.
+**1. Add and Remove Technologies from Your Stack**
+Technologies can be added to a personal "Your Stack" list, removed
+individually, or cleared all at once using the Remove All button. Every
+action, including an attempt to add the same technology twice, triggers a
+toast notification.
 
-### 2. Fully Responsive Layout
-A sticky navbar that collapses into a clean three-part mobile layout
-(hamburger → logo → auth buttons), and a technology grid that reflows from
-1 column on mobile, to 2 on tablet, to 3 on desktop.
+**2. Fully Responsive Layout**
+The navbar is sticky and collapses into a three-part mobile layout
+(hamburger menu, logo, and authentication buttons). The technology grid
+adapts from a single column on mobile to two columns on tablet and three
+columns on desktop.
 
-### 3. Data-Driven UI with Loading State
-All technologies are loaded from a local JSON file at runtime — not
-hardcoded into the component — with a loading spinner shown while the
-fetch is in flight.
+**3. Data-Driven Interface with Loading State**
+All technology data is loaded from a local JSON file at runtime rather than
+being hardcoded into the components, and a loading indicator is shown while
+the data is being fetched.
 
-## 📦 Getting Started
+## Getting Started
 
-Clone the project and run it locally:
+Clone the repository and run the project locally:
 
 \`\`\`bash
 git clone https://github.com/ahmedintekhab76-stack/Assignment-5.git
@@ -59,75 +56,75 @@ npm install
 npm run dev
 \`\`\`
 
-Then open the local URL printed in your terminal (usually `http://localhost:5173`).
+Then open the local URL printed in the terminal (typically `http://localhost:5173`).
 
-## 📁 Project Structure
+## Project Structure
 
 \`\`\`
 devstack/
 ├── public/
 │   └── data/
-│       └── technologies.json   # Technology data source
+│       └── technologies.json   Technology data source
 ├── src/
-│   ├── assets/                 # Images & icons
-│   ├── components/             # Navbar, Hero, TechnologyCard, StackSidebar, Footer
+│   ├── assets/                 Images and icons
+│   ├── components/             Navbar, Hero, TechnologyCard, StackSidebar, Footer
 │   ├── hooks/
-│   │   └── useTechnologies.js  # Fetches JSON data with loading/error state
-│   ├── App.jsx                 # Main app logic & state
-│   └── index.css               # Global styles + gradient theme
+│   │   └── useTechnologies.js  Fetches JSON data with loading and error state
+│   ├── App.jsx                 Main application logic and state
+│   └── index.css                Global styles and gradient theme
 └── README.md
 \`\`\`
 
 ---
 
-## 🧠 React Questions
+## React Questions
 
 **1. What is JSX, and why is it used in React?**
 
-JSX is a syntax extension for JavaScript that lets us write HTML-like markup
-directly inside our JavaScript/React code, for example `<div>Hello</div>`.
-Under the hood it gets compiled into regular `React.createElement()` calls.
-We use it because it's much easier to read and write UI structure this way,
-instead of building it with plain JavaScript function calls.
+JSX is a syntax extension for JavaScript that allows HTML-like markup to be
+written directly inside JavaScript code, for example `<div>Hello</div>`.
+Under the hood, it compiles into regular `React.createElement()` calls. It
+is used because it makes UI structure far easier to read and write than
+building it through plain JavaScript function calls.
 
 **2. What is the difference between props and state?**
 
-Props are data passed **into** a component from its parent — the component
-receiving them cannot change them, they're read-only. State is data that a
-component manages **itself**, using `useState`, and it can change over time
-(for example, when the user clicks a button). In this project, `technology`
-passed into `TechnologyCard` is a prop, while `stack` inside `App` is state.
+Props are data passed into a component from its parent; the component
+receiving them cannot modify them, as they are read-only. State is data
+that a component manages internally using `useState`, and it can change
+over time, for example in response to user interaction. In this project,
+the `technology` object passed into `TechnologyCard` is a prop, while the
+`stack` array inside `App` is state.
 
-**3. What does the `useState` hook do, and where did you use it in this project?**
+**3. What does the `useState` hook do, and where was it used in this project?**
 
-`useState` lets a functional component hold and update its own data between
-renders. We used it in `App.jsx` for the `stack` array (the list of added
-technologies) and in `Navbar.jsx` for `isMobileMenuOpen` (whether the mobile
-menu is open or closed). Every time `setStack` or `setIsMobileMenuOpen` is
-called, React re-renders the component with the new value.
+`useState` allows a functional component to hold and update its own data
+between renders. It was used in `App.jsx` for the `stack` array (the list
+of added technologies) and in `Navbar.jsx` for `isMobileMenuOpen` (whether
+the mobile menu is open). Each time `setStack` or `setIsMobileMenuOpen` is
+called, React re-renders the component with the updated value.
 
-**4. What does the `useEffect` hook do, and why did you need it to load the JSON data?**
+**4. What does the `useEffect` hook do, and why was it needed to load the JSON data?**
 
-`useEffect` lets us run side effects — code that reaches outside of React's
-normal render flow, like fetching data — after a component renders. We
-needed it in `useTechnologies.js` because fetching the JSON file is exactly
-that kind of side effect: it should happen once when the app first loads,
-not on every single re-render, so we put the `fetch()` call inside
-`useEffect` with an empty dependency array (`[]`).
+`useEffect` allows side effects, such as data fetching, to run after a
+component renders. It was needed in `useTechnologies.js` because fetching
+the JSON file is exactly that kind of side effect: it should happen once
+when the application first loads, not on every render, so the `fetch()`
+call was placed inside `useEffect` with an empty dependency array (`[]`).
 
 **5. Why does every item in a `.map()` list need a unique `key` prop?**
 
-React uses the `key` to tell list items apart between renders, so it knows
-which items were added, removed, or reordered, instead of re-rendering the
-whole list from scratch. Without a stable, unique key, React can mix up
-which DOM element belongs to which data item, causing bugs and wasted
-re-renders. We used each technology's `id` field (e.g. `"react"`) as the
-key when mapping over the technology list.
+React uses the `key` to distinguish list items between renders, allowing it
+to correctly identify which items were added, removed, or reordered rather
+than re-rendering the entire list from scratch. Without a stable, unique
+key, React can misattribute DOM elements to the wrong data item, leading to
+bugs and unnecessary re-renders. Each technology's `id` field (for example,
+`"react"`) was used as the key when mapping over the technology list.
 
-**6. What is conditional rendering? Show one place you used it.**
+**6. What is conditional rendering? Show one place it was used.**
 
-Conditional rendering means showing different UI depending on some
-condition, instead of always rendering the same thing. We used it in
+Conditional rendering means displaying different UI depending on a
+condition, rather than always rendering the same output. It was used in
 `StackSidebar.jsx`:
 
 \`\`\`jsx
@@ -138,20 +135,16 @@ condition, instead of always rendering the same thing. We used it in
 )}
 \`\`\`
 
-If nothing has been added to the stack yet, it shows the empty message;
-otherwise it shows the actual list.
+If no technologies have been added to the stack, an empty-state message is
+shown; otherwise, the list of selected items is displayed.
 
-**7. How do you pass data from a parent component to a child component, and how does a child send something back to the parent?**
+**7. How is data passed from a parent component to a child, and how does a child send data back to the parent?**
 
-A parent passes data down to a child through **props** — for example, `App`
+A parent passes data down to a child through props. For example, `App`
 passes `technology`, `isAdded`, and `onAdd` into `<TechnologyCard />`. For a
-child to send data back up, the parent passes down a **function as a prop**
-(like `onAdd`), and the child calls that function with whatever data it
-wants to send (`onAdd(technology)`). This is often called "lifting state
-up," because the actual state (the `stack` array) lives in the parent, and
-both the child that adds items and the child that displays them share it
-through that one source of truth.
-
----
-
-<p align="center">Built with ❤️ using React & Tailwind CSS</p>
+child to send data back up, the parent passes down a function as a prop
+(such as `onAdd`), and the child calls that function with the relevant data
+(`onAdd(technology)`). This pattern is commonly known as "lifting state
+up," since the actual state (the `stack` array) lives in the parent, and
+both the component that adds items and the component that displays them
+share it through a single source of truth.
