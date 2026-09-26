@@ -1,122 +1,97 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import TechnologyCard from "./components/TechnologyCard";
+import StackSidebar from "./components/StackSidebar";
+import Footer from "./components/Footer";
+import useTechnologies from "./hooks/useTechnologies";
+import { useState } from "react";
+
+export default function App() {
+  const { technologies, isLoading, error } = useTechnologies();
+
+  // The stack lives in the parent (App) because both the technology grid
+  // (to disable an "added" card) and the sidebar (to list/remove items)
+  // need to read and update the same data. Lifting state up here is what
+  // lets a child (TechnologyCard's button) send data back to the parent.
+  const [stack, setStack] = useState([]);
+
+  function handleAddToStack(technology) {
+    const alreadyAdded = stack.some((item) => item.id === technology.id);
+
+    if (alreadyAdded) {
+      toast.warn(`${technology.name} is already in your stack.`);
+      return;
+    }
+
+    setStack((prev) => [...prev, technology]);
+    toast.success(`${technology.name} added to your stack.`);
+  }
+
+  function handleRemove(id) {
+    const removed = stack.find((item) => item.id === id);
+    setStack((prev) => prev.filter((item) => item.id !== id));
+    if (removed) {
+      toast.info(`${removed.name} removed from your stack.`);
+    }
+  }
+
+  function handleRemoveAll() {
+    setStack([]);
+    toast.info("All technologies removed from your stack.");
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <Hero />
+
+      <section id="technologies" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">
+            Explore the <span className="text-brand-gradient">Technologies</span>
+          </h2>
+          <p className="mt-2 text-slate-600">
+            Pick one technology per category to build your ideal stack.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+
+        {isLoading ? (
+          <LoadingState />
+        ) : error ? (
+          <p className="text-sm text-red-500">Could not load technology data: {error}</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-3">
+              {technologies.map((technology) => (
+                <TechnologyCard
+                  key={technology.id}
+                  technology={technology}
+                  isAdded={stack.some((item) => item.id === technology.id)}
+                  onAdd={handleAddToStack}
+                />
+              ))}
+            </div>
+
+            <StackSidebar stack={stack} onRemove={handleRemove} onRemoveAll={handleRemoveAll} />
+          </div>
+        )}
       </section>
 
-      <div className="ticks"></div>
+      <Footer />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <ToastContainer position="top-right" autoClose={2500} theme="light" />
+    </div>
+  );
 }
 
-export default App
+function LoadingState() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 py-20 text-slate-500">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-transparent" />
+      <p className="text-sm">Loading technologies...</p>
+    </div>
+  );
+}
